@@ -22,7 +22,7 @@ router.get('/getUserOAuth2Url', (req, res) => {
 router.get('/getTokenFromCode', (req, res) => {
     var code = req.query.code;
     new GoogleOAuthService(new GoogleAuth(), config.oauthConfig.google).getTokenFromCode(code);
-    res.redirect(config.webConfig.clientHostname);
+    res.redirect(config.webConfig.clientHostname); 
 });
 
 // router.get('/getContacts', (req, res) => {
