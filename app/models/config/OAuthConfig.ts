@@ -1,0 +1,4 @@
+
+type OAuthConfig = {
+    google: OAuthProviderConfig;
+}
