@@ -3,6 +3,7 @@ type OAuthProviderConfig = {
     CLIENT_SECRET: string;
     REDIRECT_URI: string;
     TOKEN_PATH: string;
+    TOKEN_FILENAME: string;
     SCOPES: string[];
     ACCESS_TYPE: string
 }
