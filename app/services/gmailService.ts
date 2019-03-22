@@ -17,9 +17,8 @@ export class GmailService {
         if (err) reject('The API returned an error: ' + err);
         if (res) 
         {
+          var distinctThreads:string[] = [];
           if (res.data.messages) {
-            var distinctThreads:string[] = [];
-
             res.data.messages.forEach(msg => {
               if (msg.threadId && !distinctThreads.includes(msg.threadId)) {
                 distinctThreads.push(msg.threadId)
@@ -31,6 +30,8 @@ export class GmailService {
             }).catch((threadErr) => {
               reject('The API returned an error: ' + threadErr);
             })
+          } else {
+            resolve(distinctThreads);
           }
         }
       });
@@ -80,11 +81,7 @@ export class GmailService {
       });
     }
 
-    gmailThread.messages.sort(function(a:GmailEmail, b:GmailEmail) {
-      if (a.date < b.date) return 1;
-      if (a.date >  b.date) return -1;
-      return 0;
-    });
+    gmailThread.messages.sortByFieldAsc("date");
     
     return gmailThread;
   }

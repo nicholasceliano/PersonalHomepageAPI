@@ -4,6 +4,7 @@ import cookieParser = require('cookie-parser');
 const app = express();
 
 require("./appMiddleware")(app);
+require("./extensions/ArrayExt");
 
 app.use(cookieParser());
 app.use("/oauth/google",require('./routes/oauth/google'));
