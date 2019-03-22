@@ -21,8 +21,8 @@ router.use((req, res, next) => {
     }
 });
 
-router.get('/getLabels', (req, res) => {
-    new GmailService(new GoogleApis()).listLabels(res.locals.authResp)
+router.get('/getUnreadEmails', (req, res) => {
+    new GmailService(new GoogleApis()).getUnreadEmails(res.locals.authResp)
         .then((apiResp) => res.apiResponse(apiResp))
         .catch((apiErr) => res.apiError(apiErr));
 });
