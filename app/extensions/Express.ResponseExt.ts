@@ -5,6 +5,7 @@ declare global {
         interface Response {
             apiResponse(respData: object): Response
             apiError(error: string): Response
+            locals: any;
         }
     }
 }

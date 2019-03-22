@@ -1,6 +1,7 @@
 import fs = require('fs');
 import { GoogleAuth, OAuth2Client } from 'google-auth-library';
 import uuidv4 from 'uuid/v4'
+import { NextFunction } from 'connect';
 
 export class GoogleOAuthService {
 
@@ -12,6 +13,19 @@ export class GoogleOAuthService {
         this.config.CLIENT_SECRET, 
         this.config.REDIRECT_URI
     );
+
+    public checkGapiAuth(req: Express.Request, res: Express.Response, next: NextFunction) {
+        var tokenUserAuthUID = req.cookies[this.config.CLIENT_COOKIE_NAME];
+
+        if (tokenUserAuthUID != undefined && !Array.isArray(tokenUserAuthUID)) {
+            this.checkForUsersToken(tokenUserAuthUID).then((authResp) => {
+                res.locals.authResp = authResp
+                next(); 
+            }).catch((authErr) => res.apiError(authErr));
+        } else {
+            res.apiError(`Error: ${this.config.CLIENT_COOKIE_NAME} missing or malformed.`)
+        }
+    }
 
     public checkForUsersToken(tokenUserAuthUID: string): Promise<OAuth2Client> {
         var _this = this;
