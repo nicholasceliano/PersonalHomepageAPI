@@ -9,7 +9,7 @@ const router = express.Router();
 
 //scope specific middleware
 router.use((req, res, next) => {
-    new GoogleOAuthService(new GoogleAuth(), config.oauthConfig.google).checkGapiAuth(req, res, next);
+    new GoogleOAuthService(new GoogleAuth(), config.credentialsConfig.google).checkGapiAuth(req, res, next);
 });
 
 router.get('/unreadEmails', (req, res) => {
