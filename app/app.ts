@@ -12,5 +12,6 @@ app.use("/api/gmail",require('./routes/api/gmail'));
 app.use("/api/youtube",require('./routes/api/youtube'));
 app.use("/api/weather",require('./routes/api/weather'));
 app.use("/api/location",require('./routes/api/location'));
+app.use("/api/currency",require('./routes/api/currency'));
 
 app.listen(config.webConfig.port, () => console.log(`App listening on port ${config.webConfig.port}!`));
