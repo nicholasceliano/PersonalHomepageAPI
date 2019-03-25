@@ -1,6 +1,7 @@
 import express = require('express');
 import config = require('../../config')
 import { LocationService } from '../../services/locationService';
+import { HelperService } from '../../services/helperService';
 
 const router = express.Router();
 
@@ -13,7 +14,7 @@ router.get('/addressFromCoords', (req, res) => {
     if (req.query.lat && req.query.lon) {
         var lat = req.query.lat;
         var lon = req.query.lon;
-        new LocationService(config.credentialsConfig.openStreetMap).getAddressFromCoords(lat, lon)
+        new LocationService(config.credentialsConfig.openStreetMap, new HelperService()).getAddressFromCoords(lat, lon)
         .then((apiResp) => res.apiResponse(apiResp))
         .catch((apiErr) => res.apiError(apiErr));
     } else {

@@ -7,6 +7,8 @@ type WeatherData = {
     main: string;
     desc: string;
     icon: string;
+    rain3h: number;
+    snow3h: number;
     windSpeed: number;
     windDir: string;
     forecast: WeatherData[] | undefined;

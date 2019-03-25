@@ -50,6 +50,8 @@ export class OpenWeatherMapService {
       main: e.weather[0].main,
       desc: e.weather[0].description,
       icon: e.weather[0].icon,
+      rain3h: e.rain != undefined &&  e.rain['3h'] ? parseFloat(e.rain['3h'].toFixed(2)) : 0,
+      snow3h: e.snow != undefined &&  e.snow['3h'] ? parseFloat(e.snow['3h'].toFixed(2)) : 0,
       windSpeed: this.ConvertMeterPerSecondToMPH(e.wind.speed), 
       windDir: this.ConvertDregeeToCompass(e.wind.deg),
       forecast: undefined
@@ -61,12 +63,12 @@ export class OpenWeatherMapService {
   }
 
   private ConvertDregeeToCompass(D: number) {
-    var val= (( 244.501/22.5)+.5)
-    var array =["N","NNE","NE","ENE","E","ESE", "SE", "SSE","S","SSW","SW","WSW","W","WNW","NW","NNW"]
-    return array[Math.floor(val)]
+    var val= (( 244.501/22.5)+.5);
+    var array =["N","NNE","NE","ENE","E","ESE", "SE", "SSE","S","SSW","SW","WSW","W","WNW","NW","NNW"];
+    return array[Math.floor(val)];
   }
 
   private ConvertMeterPerSecondToMPH(mps: number) {
-    return parseFloat((mps * 2.237).toFixed(2))
+    return Math.round(mps * 2.237);
   }
 }
