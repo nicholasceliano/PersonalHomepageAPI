@@ -3,8 +3,8 @@ export class HelperService {
       return Object.keys(object).find(key => object[key] === value);
     }
 
-    public calculatePercentChange(origVal: number, newVal: number): string {
-      return ((newVal - origVal) / origVal * 100).toFixed(2) + '%'
+    public calculatePercentChange(origVal: number, newVal: number): number {
+      return parseFloat(((newVal - origVal) / origVal * 100).toFixed(2));
     }
     
     public daysBetweenDates(startDate, endDate) {

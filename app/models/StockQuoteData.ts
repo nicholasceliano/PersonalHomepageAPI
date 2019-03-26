@@ -7,6 +7,6 @@ type StockQuoteData = {
     currStockVal?: number;
     currPriceVal?: number;
     currPriceDate?: Date;
-    priceDiffPercent?: string;
+    priceDiffPercent?: number;
     dateDiff?: string;
 }
