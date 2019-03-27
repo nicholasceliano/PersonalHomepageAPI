@@ -81,7 +81,7 @@ export class GmailService {
       });
     }
 
-    gmailThread.messages.sortByFieldAsc("date");
+    gmailThread.messages.sortByFieldDesc("date");
     
     return gmailThread;
   }

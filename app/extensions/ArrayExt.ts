@@ -9,16 +9,16 @@ declare global {
 
 Array.prototype.sortByFieldAsc = function(sortField: string) {
     return this.sort(function(a, b) {
-        if (a[sortField] < b[sortField]) return 1;
-        if (a[sortField] >  b[sortField]) return -1;
+        if (a[sortField] > b[sortField]) return 1;
+        if (a[sortField] <  b[sortField]) return -1;
         return 0;
     });
 }
 
 Array.prototype.sortByFieldDesc = function(sortField: string) {
     return this.sort(function(a, b) {
-        if (a[sortField] > b[sortField]) return 1;
-        if (a[sortField] <  b[sortField]) return -1;
+        if (a[sortField] < b[sortField]) return 1;
+        if (a[sortField] >  b[sortField]) return -1;
         return 0;
     });
 }

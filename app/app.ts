@@ -14,4 +14,4 @@ app.use("/api/weather",require('./routes/api/weather'));
 app.use("/api/location",require('./routes/api/location'));
 app.use("/api/currency",require('./routes/api/currency'));
 
-app.listen(config.webConfig.port, () => console.log(`App listening on port ${config.webConfig.port}!`));
+module.exports = app.listen(config.webConfig.port, () => console.log(`App listening on port ${config.webConfig.port}!`));
