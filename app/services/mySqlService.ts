@@ -11,12 +11,11 @@ export class MySqlService {
         database: this.config.database
       }
   
-
   public storedProcedure(proc: string): Promise<any> {
     return new Promise((resolve, reject) => {
         var connection = mysql.createConnection(this.dbCredentials);
         connection.query(`CALL ${proc}`, true, (error, results, fields) => {
-            if (error) reject(console.error(error.message));
+            if (error) return reject(console.error(error.message));
         
             resolve(results[0]);
         });

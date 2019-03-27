@@ -13,7 +13,7 @@ export class YoutubeService {
         var subscriptionVideos:string[] = [];
         youtube.subscriptions.list({ mine: true, part: 'snippet', maxResults: 50 }, 
         (err, res) => {
-            if (err) reject('The API returned an error: ' + err);
+            if (err) return reject(err);
             if (res && res.data.items) {
                 var channelIds: string[]= [];
                 res.data.items.forEach(item => {
@@ -31,8 +31,8 @@ export class YoutubeService {
                         });
                         
                         resolve(allPlaylistItems.sortByFieldAsc("videoDate").slice(0,50));//only return 50 more recent
-                    }).catch((playlistItemsErr) => reject('The API returned an error: ' + playlistItemsErr));
-                }).catch((playlistErr) => reject('The API returned an error: ' + playlistErr))
+                    }).catch((playlistItemsErr) => reject(playlistItemsErr));
+                }).catch((playlistErr) => reject(playlistErr))
 
             } else resolve(subscriptionVideos);
         });
@@ -46,13 +46,13 @@ export class YoutubeService {
         promises.push(new Promise(function (resolve, reject) {
             youtube.channels.list({ id: channelId, part: 'contentDetails' },
             (err, res) => {
-                if (err) reject('The API returned an error: ' + err); 
+                if (err) return reject(err); 
                 if (res && res.data.items && res.data.items.length == 1 && res.data.items[0].contentDetails && 
                     res.data.items[0].contentDetails.relatedPlaylists && res.data.items[0].contentDetails.relatedPlaylists.uploads) {
                     var uploadPlaylistId:string = res.data.items[0].contentDetails.relatedPlaylists.uploads
                     resolve(uploadPlaylistId);
                 }
-                else reject('The API returned an error: ' + err);
+                else reject(err);
             })
         }));    
     });
@@ -68,7 +68,7 @@ export class YoutubeService {
             youtube.playlistItems.list({ playlistId: playlistId, part: 'snippet,contentDetails', maxResults: 10 },
             (err, res) => {
                 var playlistItems:YoutubePlaylistItem[] = [];
-                if (err) reject('The API returned an error: ' + err); 
+                if (err) return reject(err); 
                 if (res && res.data.items) {
                     res.data.items.forEach(item => {
                         if (item.contentDetails && item.snippet && item.snippet.thumbnails) {

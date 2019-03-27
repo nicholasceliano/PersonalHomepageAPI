@@ -16,12 +16,16 @@ router.get('/getUserOAuth2Url', (req, res) => {
 });
 
 router.get('/getTokenFromCode', (req, res) => {
-    var code = req.query.code;
-    new GoogleOAuthService(new GoogleAuth(), config.credentialsConfig.google).getTokenFromCode(code).then((codeResp) => {
-        res.redirect(`${config.webConfig.clientHostname}/googleAuth?uid=${codeResp}`);
-    }).catch((err) => {
-        res.redirect(`${config.webConfig.clientHostname}/error?`);
-    });
+    if (req.query.code) {
+        var code = req.query.code;
+        new GoogleOAuthService(new GoogleAuth(), config.credentialsConfig.google).getTokenFromCode(code).then((codeResp) => {
+            res.redirect(`${config.webConfig.clientHostname}/googleAuth?uid=${codeResp}`);
+        }).catch((err) => {
+            res.redirect(`${config.webConfig.clientHostname}/error?err=${err}`);
+        });
+    } else {
+        res.redirect(`${config.webConfig.clientHostname}/error?err="Code" query param is required`);
+    }
 });
 
 module.exports = router;

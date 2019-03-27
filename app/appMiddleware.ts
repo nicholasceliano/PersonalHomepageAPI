@@ -8,7 +8,7 @@ module.exports = function(app: express.Express) {
         res.apiError = function(error: string) {
             return res.json(<APIResponse> {
                 err: true,
-                msg: error,
+                msg: 'The API returned an error: ' + error,
                 data: []
             });
         };

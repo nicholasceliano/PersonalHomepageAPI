@@ -14,7 +14,7 @@ export class GmailService {
         userId: 'me',
         q: 'is:unread'
       }, (err, res) => {
-        if (err) reject('The API returned an error: ' + err);
+        if (err) return reject(err);
         if (res) 
         {
           var distinctThreads:string[] = [];
@@ -28,7 +28,7 @@ export class GmailService {
             _this.GetThreadsByThreadList(gmail, distinctThreads).then((threadResp) => {
               resolve(threadResp);
             }).catch((threadErr) => {
-              reject('The API returned an error: ' + threadErr);
+              reject(threadErr);
             })
           } else {
             resolve(distinctThreads);
@@ -48,9 +48,9 @@ export class GmailService {
           userId: 'me',
           id: thread
         }, (err, res) => {
-          if (err) reject('The API returned an error: ' + err);
+          if (err) return reject(err);
           if (res) resolve(_this.BuildGmailThreadResponse(res.data));
-          else reject('The API returned an error: ' + err);
+          else reject(err);
         });
       }))
     });

@@ -39,7 +39,7 @@ export class CurrencyService {
 
               stockQuoteData = this.setExchangeRateToStockQuoteData(stockQuoteData, commodityJSON);
               resolve(stockQuoteData);
-            }).catch((err) => reject('The API returned an error: ' + err));
+            }).catch((err) => reject(err));
           }))
         });
         
@@ -51,7 +51,7 @@ export class CurrencyService {
             stockQuoteData = this.setBatchStockQuotesToStockQuoteData(stockQuoteData, quotesJSON);
             resolve(stockQuoteData);
           });
-        }).catch((err) => reject('The API returned an error: ' + err));
+        }).catch((err) => reject(err));
       });
     });
   }
@@ -60,7 +60,7 @@ export class CurrencyService {
     return new Promise<string>((resolve, reject) => {
       request.get(`${this.config.APIUri}?function=BATCH_STOCK_QUOTES&symbols=${symbols.join(',')}&apikey=${this.config.APIKey}`, 
       (err, res, body) => {
-        if (err) reject('The API returned an error: ' + err);
+        if (err) return reject(err);
         resolve(res.body);
       });
     });
@@ -70,7 +70,7 @@ export class CurrencyService {
     return new Promise((resolve, reject) => {
       request.get(`${this.config.APIUri}?function=CURRENCY_EXCHANGE_RATE&from_currency=${commoditySymbol}&to_currency=USD&apikey=${this.config.APIKey}`, 
       (err, res, body) => {
-        if (err) reject('The API returned an error: ' + err);
+        if (err) return reject(err);
         resolve(res.body);
       });
     });

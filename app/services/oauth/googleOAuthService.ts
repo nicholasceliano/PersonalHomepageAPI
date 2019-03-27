@@ -23,7 +23,7 @@ export class GoogleOAuthService {
                 next(); 
             }).catch((authErr) => res.apiError(authErr));
         } else {
-            res.apiError(`Error: ${this.config.CLIENT_COOKIE_NAME} missing or malformed.`)
+            res.apiError(`${this.config.CLIENT_COOKIE_NAME} HttpHeader variable missing or malformed.`)
         }
     }
 
@@ -32,12 +32,10 @@ export class GoogleOAuthService {
         // Check if we have previously stored a token.
         return new Promise(function(resolve, reject){
             fs.readFile(`${_this.config.TOKEN_PATH}${tokenUserAuthUID}-${_this.config.TOKEN_FILENAME}`, function (err, token) {
-                if (err)
-                    reject("No Token file: Login Required.");
-                else { 
-                    _this.oAuth2Client.setCredentials(JSON.parse(token.toString()));
-                    resolve(_this.oAuth2Client);
-                }
+                if (err) return reject("No Token file: Login Required.");
+
+                _this.oAuth2Client.setCredentials(JSON.parse(token.toString()));
+                resolve(_this.oAuth2Client);
             });
         });
     }
@@ -54,8 +52,7 @@ export class GoogleOAuthService {
         var _this = this;
         return new Promise(function(resolve, reject){
             _this.oAuth2Client.getToken(code, function (err, token) {
-                if (err)
-                    reject(console.log('Error retrieving access token', err));
+                if (err) return reject('Error retrieving access token' + err);
                 if (token) {
                     var userTokenRefUUID: string = uuidv4();
                     _this.oAuth2Client.setCredentials(token);
@@ -69,7 +66,7 @@ export class GoogleOAuthService {
                     resolve(userTokenRefUUID);
                 }
                 else
-                    reject(console.log('Error: Token does not exist'));
+                    reject('Token does not exist');
             });
         });
     }; 
