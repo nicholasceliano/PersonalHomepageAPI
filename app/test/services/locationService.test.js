@@ -19,5 +19,11 @@ describe('LocationService', function () {
                     expect(err).to.contain('The API returned an error: ');
                 });
         });
+        it('should error if coords outside acceptable range', function () {
+            return new LocationService(config.credentialsConfig.openStreetMap, 
+                new HelperService()).getAddressFromCoords(190, 180).then().catch(err => {
+                    expect(err).to.equal("'lat' must be between -90 and 90 and 'lng' must be between -180 and 180.")
+                });
+        });
     });
 });

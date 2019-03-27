@@ -6,6 +6,8 @@ export class OpenWeatherMapService {
 
   public getCurrentWeatherByLocation(lat: number, lon: number): Promise<WeatherData> {
       return new Promise((resolve, reject) => {
+        if (!lat.isValidLatitude() || !lon.isValidLongitude()) return reject("'lat' must be between -90 and 90 and 'lng' must be between -180 and 180.");
+
         request.get(`${this.config.APIUri}/weather?lat=${lat}&lon=${lon}&APPID=${this.config.APIKey}`, 
         (err, res, body) => {
           if (err) return reject(err);

@@ -52,7 +52,7 @@ export class GoogleOAuthService {
         var _this = this;
         return new Promise(function(resolve, reject){
             _this.oAuth2Client.getToken(code, function (err, token) {
-                if (err) return reject('Error retrieving access token' + err);
+                if (err) return reject('Error retrieving access token ' + err);
                 if (token) {
                     var userTokenRefUUID: string = uuidv4();
                     _this.oAuth2Client.setCredentials(token);

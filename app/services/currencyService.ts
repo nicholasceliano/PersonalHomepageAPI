@@ -35,9 +35,11 @@ export class CurrencyService {
         commodities.forEach(commodity => {
           commodityPromises.push(new Promise((resolve, reject) => {
             this.getCommodityExchangeRate(commodity).then((commResp) => {
-              var commodityJSON = JSON.parse(commResp)["Realtime Currency Exchange Rate"];
+              var parsedJSON = JSON.parse(commResp);
 
-              stockQuoteData = this.setExchangeRateToStockQuoteData(stockQuoteData, commodityJSON);
+              if (!parsedJSON["Realtime Currency Exchange Rate"]) return reject(parsedJSON);
+
+              stockQuoteData = this.setExchangeRateToStockQuoteData(stockQuoteData, parsedJSON["Realtime Currency Exchange Rate"]);
               resolve(stockQuoteData);
             }).catch((err) => reject(err));
           }))
@@ -46,9 +48,11 @@ export class CurrencyService {
         //get stock quotes & fill response
         Promise.all(commodityPromises).then((resp) => {
           this.getBatchStockQuotesBySymbols(symbols).then((quotesResp) => {
-            var quotesJSON = JSON.parse(quotesResp)['Stock Quotes'];
+            var parsedJSON = JSON.parse(quotesResp);
             
-            stockQuoteData = this.setBatchStockQuotesToStockQuoteData(stockQuoteData, quotesJSON);
+            if (!parsedJSON['Stock Quotes']) return reject(parsedJSON);
+
+            stockQuoteData = this.setBatchStockQuotesToStockQuoteData(stockQuoteData, parsedJSON['Stock Quotes']);
             resolve(stockQuoteData);
           });
         }).catch((err) => reject(err));

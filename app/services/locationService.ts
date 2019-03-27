@@ -10,6 +10,8 @@ export class LocationService {
 
   public getAddressFromCoords(lat: number, lon: number): Promise<Address> {
       return new Promise((resolve, reject) => {
+        if (!lat.isValidLatitude() || !lon.isValidLongitude()) return reject ("'lat' must be between -90 and 90 and 'lng' must be between -180 and 180.");
+        
         request.get({
             url:`${this.config.APIUri}reverse?format=json&lat=${lat}&lon=${lon}`,
             headers: { 'User-Agent': 'PersonalHomepage' }
@@ -33,7 +35,7 @@ export class LocationService {
           }
 
           resolve(addressData);
-        });
+        });  
       });
   }
 }
