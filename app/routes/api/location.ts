@@ -1,5 +1,5 @@
 import express = require('express');
-import config = require('../../config')
+import { errorConfig, credentialsConfig } from '../../config';
 import { LocationService } from '../../services/locationService';
 import { HelperService } from '../../services/helperService';
 
@@ -16,14 +16,14 @@ router.get('/addressFromCoords', (req, res) => {
         var lon = parseFloat(req.query.lon);
 
         if (isNaN(lat) || isNaN(lon)) {
-            res.apiError("'lat' and 'lng' query parameters must be floating-point numbers.");
+            res.apiError(errorConfig.latLngMustBeFloat);
         } else {
-            new LocationService(config.credentialsConfig.openStreetMap, new HelperService()).getAddressFromCoords(lat, lon)
+            new LocationService(credentialsConfig.openStreetMap, new HelperService()).getAddressFromCoords(lat, lon)
             .then((apiResp) => res.apiResponse(apiResp))
             .catch((apiErr) => res.apiError(apiErr));
         }
     } else {
-        res.apiError("'lat' and 'lng' query parameters required.")
+        res.apiError(errorConfig.latLngRequired)
     }
 });
 

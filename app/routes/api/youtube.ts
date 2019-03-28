@@ -1,7 +1,6 @@
 import express = require('express');
 import { GoogleOAuthService } from '../../services/oauth/googleOAuthService';
-import { GoogleAuth } from 'google-auth-library';
-import config = require('../../config');
+import { credentialsConfig } from '../../config';
 import { GoogleApis } from 'googleapis';
 import { YoutubeService } from '../../services/youtubeService';
 
@@ -9,7 +8,7 @@ const router = express.Router();
 
 //scope specific middleware
 router.use((req, res, next) => {
-    new GoogleOAuthService(new GoogleAuth(), config.credentialsConfig.google).checkGapiAuth(req, res, next);
+    new GoogleOAuthService(credentialsConfig.google).checkGapiAuth(req, res, next);
 });
 
 router.get('/subscription', (req, res) => {

@@ -1,5 +1,5 @@
 import express = require('express');
-import config = require('../../config')
+import { credentialsConfig } from '../../config';
 import { CurrencyService } from '../../services/currencyService';
 import { MySqlService } from '../../services/mySqlService';
 import { HelperService } from '../../services/helperService';
@@ -12,8 +12,8 @@ router.use((req, res, next) => {
 });
 
 router.get('/stockQuoteData', (req, res) => {
-    new CurrencyService(config.credentialsConfig.alphaVantage, 
-        new MySqlService(config.credentialsConfig.gnuCash),
+    new CurrencyService(credentialsConfig.alphaVantage, 
+        new MySqlService(credentialsConfig.gnuCash),
         new HelperService()).getStockQuoteData()
         .then((apiResp) => res.apiResponse(apiResp))
         .catch((apiErr) => res.apiError(apiErr));

@@ -7,6 +7,7 @@ chai.use(chaiHttp);
 describe('API', function () {
     describe('Currency', function (){
         it('returns no err and a list of stockQuoteData', function(done) {
+            this.timeout(0);
             chai.request(app).get('/api/currency/stockQuoteData')
             .then(res => {
                 expect(res).to.have.status(200);
@@ -37,7 +38,7 @@ describe('API', function () {
                 expect(res).to.have.status(200);
                 expect(res).to.be.json
                 expect(res.body.err).to.equal(true);
-                expect(res.body.msg).to.equal('The API returned an error: No Token file: Login Required.');
+                expect(res.body.msg).to.equal('The API returned an error: No Token: Login Required.');
                 expect(res.body.data).to.be.an('array').that.is.empty;
                 done();
             });
@@ -184,7 +185,7 @@ describe('API', function () {
                 expect(res).to.have.status(200);
                 expect(res).to.be.json
                 expect(res.body.err).to.equal(true);
-                expect(res.body.msg).to.equal('The API returned an error: No Token file: Login Required.');
+                expect(res.body.msg).to.equal('The API returned an error: No Token: Login Required.');
                 expect(res.body.data).to.be.an('array').that.is.empty;
                 done();
             });

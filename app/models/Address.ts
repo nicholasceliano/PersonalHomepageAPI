@@ -5,4 +5,4 @@ type Address = {
     state: string;
     state_abbr?: string;
     postcode: string;
-}
+};

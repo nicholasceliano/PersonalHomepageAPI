@@ -1,7 +1,6 @@
 import express = require('express');
 import { GoogleOAuthService } from '../../services/oauth/googleOAuthService';
-import { GoogleAuth } from 'google-auth-library';
-import config = require('../../config');
+import { webConfig, credentialsConfig, errorConfig } from '../../config';
 
 const router = express.Router();
 
@@ -11,20 +10,20 @@ router.use((req, res, next) => {
 });
   
 router.get('/getUserOAuth2Url', (req, res) => {
-    var authorizationUrl = new GoogleOAuthService(new GoogleAuth(), config.credentialsConfig.google).getUserAuth2Url();
+    var authorizationUrl = new GoogleOAuthService(credentialsConfig.google).getUserAuth2Url();
     res.json({ url: authorizationUrl });
 });
 
 router.get('/getTokenFromCode', (req, res) => {
     if (req.query.code) {
         var code = req.query.code;
-        new GoogleOAuthService(new GoogleAuth(), config.credentialsConfig.google).getTokenFromCode(code).then((codeResp) => {
-            res.redirect(`${config.webConfig.clientHostname}/googleAuth?uid=${codeResp}`);
+        new GoogleOAuthService(credentialsConfig.google).getTokenFromCode(code).then((codeResp) => {
+            res.redirect(`${webConfig().clientHostname}/googleAuth?uid=${codeResp}`);
         }).catch((err) => {
-            res.redirect(`${config.webConfig.clientHostname}/error?err=${err}`);
+            res.redirect(`${webConfig().clientHostname}/error?err=${err}`);
         });
     } else {
-        res.redirect(`${config.webConfig.clientHostname}/error?err="Code" query param is required`);
+        res.redirect(`${webConfig().clientHostname}/error?err=${errorConfig.codeParamRequired}`);
     }
 });
 

@@ -3,4 +3,4 @@ type GmailEmail = {
     from?: string;
     subject?: string;
     date: Date;
-}
+};

@@ -1,6 +1,6 @@
 import express = require('express');
 import { OpenWeatherMapService } from '../../services/openWeatherMapService';
-import config = require('../../config')
+import { errorConfig, credentialsConfig } from '../../config';
 
 const router = express.Router();
 
@@ -15,14 +15,14 @@ router.get('/currentWeather', (req, res) => {
         var lon = parseFloat(req.query.lon);
 
         if (isNaN(lat) || isNaN(lon)) {
-            res.apiError("'lat' and 'lng' query parameters must be floating-point numbers.");
+            res.apiError(errorConfig.latLngMustBeFloat);
         } else {
-            new OpenWeatherMapService(config.credentialsConfig.openWeather).getCurrentWeatherByLocation(lat, lon)
+            new OpenWeatherMapService(credentialsConfig.openWeather).getCurrentWeatherByLocation(lat, lon)
             .then((apiResp) => res.apiResponse(apiResp))
             .catch((apiErr) => res.apiError(apiErr));
         }
     } else {
-        res.apiError("'lat' and 'lng' query parameters required.")
+        res.apiError(errorConfig.latLngRequired);
     }
 });
 

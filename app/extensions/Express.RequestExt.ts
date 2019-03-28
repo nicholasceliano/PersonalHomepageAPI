@@ -1,4 +1,4 @@
-export {}//force file to be loaded as module
+export {}; // force file to be loaded as module
 
 declare global {
     namespace Express {

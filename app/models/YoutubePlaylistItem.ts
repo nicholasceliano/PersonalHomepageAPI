@@ -4,5 +4,5 @@ type YoutubePlaylistItem = {
     channelTitle?: string,
     videoTitle?: string,
     videoDesc?: string,
-    thumbnail?: object
-}
+    thumbnail?: object,
+};

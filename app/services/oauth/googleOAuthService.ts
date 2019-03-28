@@ -1,12 +1,12 @@
 import fs = require('fs');
-import { GoogleAuth, OAuth2Client } from 'google-auth-library';
+import { OAuth2Client } from 'google-auth-library';
 import uuidv4 from 'uuid/v4'
+import { errorConfig } from '../../config';
 import { NextFunction } from 'connect';
 
 export class GoogleOAuthService {
 
-    constructor(private googleAuth: GoogleAuth,
-        private config: OAuthProviderConfig) {}
+    constructor(private config: OAuthProviderConfig) {}
 
     private oAuth2Client = new OAuth2Client(
         this.config.CLIENT_ID, 
@@ -23,7 +23,7 @@ export class GoogleOAuthService {
                 next(); 
             }).catch((authErr) => res.apiError(authErr));
         } else {
-            res.apiError(`${this.config.CLIENT_COOKIE_NAME} HttpHeader variable missing or malformed.`)
+            res.apiError(`${this.config.CLIENT_COOKIE_NAME} ${errorConfig.httpHeaderMissing}`)
         }
     }
 
@@ -32,7 +32,7 @@ export class GoogleOAuthService {
         // Check if we have previously stored a token.
         return new Promise(function(resolve, reject){
             fs.readFile(`${_this.config.TOKEN_PATH}${tokenUserAuthUID}-${_this.config.TOKEN_FILENAME}`, function (err, token) {
-                if (err) return reject("No Token file: Login Required.");
+                if (err) return reject(errorConfig.noTokenLoginReq);
 
                 _this.oAuth2Client.setCredentials(JSON.parse(token.toString()));
                 resolve(_this.oAuth2Client);
@@ -52,7 +52,7 @@ export class GoogleOAuthService {
         var _this = this;
         return new Promise(function(resolve, reject){
             _this.oAuth2Client.getToken(code, function (err, token) {
-                if (err) return reject('Error retrieving access token ' + err);
+                if (err) return reject(errorConfig.errorRetrievingToken + err);
                 if (token) {
                     var userTokenRefUUID: string = uuidv4();
                     _this.oAuth2Client.setCredentials(token);
@@ -66,7 +66,7 @@ export class GoogleOAuthService {
                     resolve(userTokenRefUUID);
                 }
                 else
-                    reject('Token does not exist');
+                    reject(errorConfig.noToken);
             });
         });
     }; 

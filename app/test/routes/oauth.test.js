@@ -19,13 +19,13 @@ describe('OAuth API', function (){
         });
         it('redirects to error page because missing code', function(done) {
             chai.request(app).get('/oauth/google/getTokenFromCode').redirects(0).end((err, res) => {
-                res.should.redirectTo(config.webConfig.clientHostname + '/error?err=%22Code%22%20query%20param%20is%20required');
+                res.should.redirectTo('http://localhost:4200/error?err=%22Code%22%20query%20param%20is%20required');
                 done();
             });
         });
         it('redirects to error page because bad code', function(done) {
             chai.request(app).get('/oauth/google/getTokenFromCode?code=asdqwe').redirects(0).end((err, res) => {
-                res.should.redirectTo(config.webConfig.clientHostname + '/error?err=Error%20retrieving%20access%20tokenError:%20invalid_grant');
+                res.should.redirectTo('http://localhost:4200/error?err=Error%20retrieving%20access%20token%20Error:%20invalid_grant');
                 done();
             });
         });
