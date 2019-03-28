@@ -4,4 +4,4 @@ type DatabaseConfig = {
     user: string;
     password: string;
     database: string;
-}
+};

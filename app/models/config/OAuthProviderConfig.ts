@@ -7,4 +7,4 @@ type OAuthProviderConfig = {
     SCOPES: string[];
     ACCESS_TYPE: string;
     CLIENT_COOKIE_NAME: string;
-}
+};

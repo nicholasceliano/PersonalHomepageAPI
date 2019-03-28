@@ -1,19 +1,19 @@
 import express = require('express');
-import { errorConfig, credentialsConfig } from '../../config';
-import { LocationService } from '../../services/locationService';
+import { credentialsConfig, errorConfig } from '../../config';
 import { HelperService } from '../../services/helperService';
+import { LocationService } from '../../services/locationService';
 
 const router = express.Router();
 
-//scope specific middleware
-router.use((req, res, next) => { 
+// scope specific middleware
+router.use((req, res, next) => {
     next();
 });
 
 router.get('/addressFromCoords', (req, res) => {
     if (req.query.lat && req.query.lon) {
-        var lat = parseFloat(req.query.lat);
-        var lon = parseFloat(req.query.lon);
+        const lat = parseFloat(req.query.lat);
+        const lon = parseFloat(req.query.lon);
 
         if (isNaN(lat) || isNaN(lon)) {
             res.apiError(errorConfig.latLngMustBeFloat);
@@ -23,7 +23,7 @@ router.get('/addressFromCoords', (req, res) => {
             .catch((apiErr) => res.apiError(apiErr));
         }
     } else {
-        res.apiError(errorConfig.latLngRequired)
+        res.apiError(errorConfig.latLngRequired);
     }
 });
 

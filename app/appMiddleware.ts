@@ -1,26 +1,26 @@
 import express = require('express');
 
-module.exports = function(app: express.Express) {
+module.exports = (app: express.Express) => {
 
     app.use((req, res, next) => {
-        //console.log('Time: ', Date.now());
-    
-        res.apiError = function(error: string) {
-            return res.json(<APIResponse> {
+        // console.log('Time: ', Date.now());
+
+        res.apiError = (error: string) => {
+            return res.json({
+                data: [],
                 err: true,
                 msg: 'The API returned an error: ' + error,
-                data: []
-            });
+            } as APIResponse);
         };
-    
-        res.apiResponse = function(respData: object) {
-            return res.json(<APIResponse> {
+
+        res.apiResponse = (respData: object) => {
+            return res.json({
+                data: respData,
                 err: false,
-                msg: "",
-                data: respData
-            });
+                msg: '',
+            } as APIResponse);
         };
-    
+
         next();
     });
-}
+};

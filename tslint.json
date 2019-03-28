@@ -5,6 +5,7 @@
     ],
     "jsRules": {},
     "rules": {
+        "no-var-requires": false,
         "quotemark": [true, "single"],
         "curly": [true, "ignore-same-line"],
         "variable-name": [
@@ -14,7 +15,11 @@
             "allow-leading-underscore"
         ],
         "interface-over-type-literal": false,
-        "interface-name": false
+        "interface-name": false,
+        "ordered-imports": [true, {
+            "import-sources-order": "any",
+            "named-imports-order": "case-insensitive"
+        }]
     },
     "rulesDirectory": []
 }

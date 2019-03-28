@@ -1,5 +1,5 @@
-var expect = require('chai').expect;
+var expect = require("chai").expect;
 
-describe('appMiddleware', function() {
-    //not sure how to test this right now
+describe("appMiddleware", function() {
+    // not sure how to test this right now
 });

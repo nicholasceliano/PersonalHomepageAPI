@@ -3,4 +3,4 @@ type WebConfig = {
     projectName: string;
     hostname: string;
     clientHostname: string;
-}
+};

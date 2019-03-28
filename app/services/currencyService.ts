@@ -31,15 +31,15 @@ export class CurrencyService {
         // get commodity quotes & fill response
         const commodityPromises: Array<Promise<{}>> = [];
         commodities.forEach((commodity) => {
-          commodityPromises.push(new Promise((resolve2, reject2) => {
+          commodityPromises.push(new Promise((commodityResolve, commodityReject) => {
             this.getCommodityExchangeRate(commodity).then((commResp) => {
               const parsedJSON = JSON.parse(commResp);
+              const exchangeRateNode = 'Realtime Currency Exchange Rate';
 
-              if (!parsedJSON['Realtime Currency Exchange Rate']) return reject(parsedJSON);
+              if (!parsedJSON[exchangeRateNode]) return reject(parsedJSON);
 
-              stockQuoteData = this.setExchangeRateToStockQuoteData(stockQuoteData,
-                                                                    parsedJSON['Realtime Currency Exchange Rate']);
-              resolve(stockQuoteData);
+              stockQuoteData = this.setExchangeRateToStockQuoteData(stockQuoteData, parsedJSON[exchangeRateNode]);
+              commodityResolve(stockQuoteData);
             }).catch((err) => reject(err));
           }));
         });
@@ -48,10 +48,11 @@ export class CurrencyService {
         Promise.all(commodityPromises).then((resp) => {
           this.getBatchStockQuotesBySymbols(symbols).then((quotesResp) => {
             const parsedJSON = JSON.parse(quotesResp);
+            const stockNode = 'Stock Quotes';
 
-            if (!parsedJSON['Stock Quotes']) return reject(parsedJSON);
+            if (!parsedJSON[stockNode]) return reject(parsedJSON);
 
-            stockQuoteData = this.setBatchStockQuotesToStockQuoteData(stockQuoteData, parsedJSON['Stock Quotes']);
+            stockQuoteData = this.setBatchStockQuotesToStockQuoteData(stockQuoteData, parsedJSON[stockNode]);
             resolve(stockQuoteData);
           });
         }).catch((err) => reject(err));

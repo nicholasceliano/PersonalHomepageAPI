@@ -8,7 +8,8 @@
     "test": "mocha 'app/test/{,!(routes)/**}/*.test.js'",
     "testAPIs": "mocha 'app/test/routes/*.test.js'",
     "tsc": "tsc",
-    "lint": "tslint -c tslint.json app/**/*.ts"
+    "lint": "tslint 'app/**/*.ts' 'app/test/**/*.js'",
+    "build": "npm run lint app/**/*.ts & npm run tsc & npm tes & npm run testAPIs"
   },
   "author": "",
   "license": "ISC",

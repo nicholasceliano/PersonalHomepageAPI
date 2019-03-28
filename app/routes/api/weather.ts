@@ -1,18 +1,18 @@
 import express = require('express');
+import { credentialsConfig, errorConfig } from '../../config';
 import { OpenWeatherMapService } from '../../services/openWeatherMapService';
-import { errorConfig, credentialsConfig } from '../../config';
 
 const router = express.Router();
 
-//scope specific middleware
-router.use((req, res, next) => { 
+// scope specific middleware
+router.use((req, res, next) => {
     next();
 });
 
 router.get('/currentWeather', (req, res) => {
     if (req.query.lat && req.query.lon) {
-        var lat = parseFloat(req.query.lat);
-        var lon = parseFloat(req.query.lon);
+        const lat = parseFloat(req.query.lat);
+        const lon = parseFloat(req.query.lon);
 
         if (isNaN(lat) || isNaN(lon)) {
             res.apiError(errorConfig.latLngMustBeFloat);

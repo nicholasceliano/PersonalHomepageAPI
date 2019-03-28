@@ -1,12 +1,12 @@
 import express = require('express');
-import { GoogleOAuthService } from '../../services/oauth/googleOAuthService';
 import { credentialsConfig } from '../../config';
 import { GmailService } from '../../services/gmailService';
 import { GoogleApis } from 'googleapis';
+import { GoogleOAuthService } from '../../services/oauth/googleOAuthService';
 
 const router = express.Router();
 
-//scope specific middleware
+// scope specific middleware
 router.use((req, res, next) => {
     new GoogleOAuthService(credentialsConfig.google).checkGapiAuth(req, res, next);
 });
