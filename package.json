@@ -25,7 +25,8 @@
     "opn": "^5.4.0",
     "request": "^2.88.0",
     "typescript": "^3.3.4000",
-    "uuid": "^3.3.2"
+    "uuid": "^3.3.2",
+    "winston": "^3.2.1"
   },
   "devDependencies": {
     "@types/cookie-parser": "^1.4.1",

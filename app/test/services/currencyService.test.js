@@ -3,12 +3,13 @@ var CurrencyService = require("../../../build/services/currencyService").Currenc
 var MySqlService = require("../../../build/services/mySqlService").MySqlService;
 var HelperService = require("../../../build/services/helperService").HelperService;
 var config = require("../../../build/config");
+var logger = require("winston");
 
 describe("CurrencyService", function() {
     describe("getStockQuoteData", function() {
         it("should return aggregated stock quote data from database and api", function() {
             return new CurrencyService(config.credentialsConfig.alphaVantage,
-                new MySqlService(config.credentialsConfig.gnuCash),
+                new MySqlService(config.credentialsConfig.gnuCash, logger),
                 new HelperService()).getStockQuoteData().then(res => {
                     expect(res).to.be.an("array");
                     expect(res).lengthOf.above(0);
@@ -20,7 +21,7 @@ describe("CurrencyService", function() {
     describe("getBatchStockQuotesBySymbols", function() {
         it("should return the correct output type and size", function() {
             return new CurrencyService(config.credentialsConfig.alphaVantage,
-                new MySqlService(config.credentialsConfig.gnuCash),
+                new MySqlService(config.credentialsConfig.gnuCash, logger),
                 new HelperService()).getBatchStockQuotesBySymbols(["MSFT", "AAPL"]).then(res => {
                     expect(res).to.be.a("string");
                     var noteNode = "Note";
@@ -43,7 +44,7 @@ describe("CurrencyService", function() {
     describe("getCommodityExchangeRate", function() {
         it("should return the correct output type", function() {
             return new CurrencyService(config.credentialsConfig.alphaVantage,
-                new MySqlService(config.credentialsConfig.gnuCash),
+                new MySqlService(config.credentialsConfig.gnuCash, logger),
                 new HelperService()).getCommodityExchangeRate("XAU").then(res => {
                     expect(res).to.be.a("string");
                     var noteNode = "Note";

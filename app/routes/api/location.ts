@@ -2,7 +2,9 @@ import express = require('express');
 import { credentialsConfig, errorConfig } from '../../config';
 import { HelperService } from '../../services/helperService';
 import { LocationService } from '../../services/locationService';
+import { loggers } from 'winston';
 
+const logger = loggers.get('logger');
 const router = express.Router();
 
 // scope specific middleware

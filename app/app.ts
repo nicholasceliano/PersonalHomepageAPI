@@ -1,9 +1,12 @@
 import cookieParser = require('cookie-parser');
 import express = require('express');
 import { webConfig } from '../build/config';
+import { loggers } from 'winston';
+
+require('./logger');
 
 const app = express();
-
+const logger = loggers.get('logger');
 require('./appMiddleware')(app);
 require('./extensions/ArrayExt');
 require('./extensions/NumberExt');
@@ -16,4 +19,9 @@ app.use('/api/weather', require('./routes/api/weather'));
 app.use('/api/location', require('./routes/api/location'));
 app.use('/api/currency', require('./routes/api/currency'));
 
-module.exports = app.listen(webConfig().port);
+app.use((error, req, res, next) => { // Exception Middleware. Needs to come after routes
+    logger.error(error);
+    next();
+});
+
+module.exports = app.listen(webConfig().port, () => logger.info(`App listening on port ${webConfig().port}!`));

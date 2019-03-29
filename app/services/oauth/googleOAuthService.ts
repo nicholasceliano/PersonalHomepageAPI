@@ -3,6 +3,7 @@ import uuidv4 from 'uuid/v4';
 import { errorConfig } from '../../config';
 import { NextFunction } from 'connect';
 import { OAuth2Client } from 'google-auth-library';
+import { Logger } from 'winston';
 
 export class GoogleOAuthService {
 
@@ -12,7 +13,8 @@ export class GoogleOAuthService {
         this.config.REDIRECT_URI,
     );
 
-    constructor(private config: OAuthProviderConfig) {}
+    constructor(private config: OAuthProviderConfig,
+                private logger: Logger) {}
 
     public checkGapiAuth(req: Express.Request, res: Express.Response, next: NextFunction) {
         const tokenUserAuthUID = req.cookies[this.config.CLIENT_COOKIE_NAME];
@@ -34,8 +36,10 @@ export class GoogleOAuthService {
             fs.readFile(`${_this.config.TOKEN_PATH}${tokenUserAuthUID}-${_this.config.TOKEN_FILENAME}`,
              (err, token) => {
                 if (err) return reject(errorConfig.noTokenLoginReq);
-
-                _this.oAuth2Client.setCredentials(JSON.parse(token.toString()));
+                const parsedToken = JSON.parse(token.toString());
+                this.logger.info(`Next: GoogleOAuthService.checkForUsersToken: OAuth Credentials` +
+                                `set to token ${parsedToken}`);
+                _this.oAuth2Client.setCredentials(parsedToken);
                 resolve(_this.oAuth2Client);
             });
         });
@@ -61,8 +65,8 @@ export class GoogleOAuthService {
                     fs.writeFile(`${_this.config.TOKEN_PATH}${userTokenRefUUID}-${_this.config.TOKEN_FILENAME}`,
                                     JSON.stringify(token), (fsErr) => {
                         if (fsErr) reject(fsErr);
-                        // add to log: console.log('Token stored to',
-                        // `${_this.config.TOKEN_PATH}${userTokenRefUUID}-${_this.config.TOKEN_FILENAME}`);
+                        this.logger.info(`GoogleOAuthService.getTokenFromCode: Token stored to` +
+                                    `${_this.config.TOKEN_PATH}${userTokenRefUUID}-${_this.config.TOKEN_FILENAME}`);
                     });
 
                     resolve(userTokenRefUUID);

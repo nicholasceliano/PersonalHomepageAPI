@@ -3,6 +3,8 @@ import { credentialsConfig } from '../../config';
 import { CurrencyService } from '../../services/currencyService';
 import { HelperService } from '../../services/helperService';
 import { MySqlService } from '../../services/mySqlService';
+import { loggers } from 'winston';
+const logger = loggers.get('logger');
 
 const router = express.Router();
 
@@ -13,7 +15,7 @@ router.use((req, res, next) => {
 
 router.get('/stockQuoteData', (req, res) => {
     new CurrencyService(credentialsConfig.alphaVantage,
-        new MySqlService(credentialsConfig.gnuCash),
+        new MySqlService(credentialsConfig.gnuCash, logger),
         new HelperService()).getStockQuoteData()
         .then((apiResp) => res.apiResponse(apiResp))
         .catch((apiErr) => res.apiError(apiErr));
