@@ -9,14 +9,14 @@ const router = express.Router();
 
 // scope specific middleware
 router.use((req, res, next) => {
-    logger.info('Start: TwitchOAuthService().checkTwitchAuth()');
-    new TwitchOAuthService(credentialsConfig.twitch, logger).checkOAuth(req, res, next);
+	logger.info('Start: TwitchOAuthService().checkTwitchAuth()');
+	new TwitchOAuthService(credentialsConfig.twitch, logger).checkOAuth(req, res, next);
 });
 
 router.get('/followedStreams', (req, res) => {
-    new TwitchService(credentialsConfig.twitch).getFollowedStreams(res.locals.authResp)
-        .then((apiResp) => res.apiResponse(apiResp))
-        .catch((apiErr) => res.apiError(apiErr));
+	new TwitchService(credentialsConfig.twitch).getFollowedStreams(res.locals.authResp)
+		.then((apiResp) => res.apiResponse(apiResp))
+		.catch((apiErr) => res.apiError(apiErr));
 });
 
 module.exports = router;

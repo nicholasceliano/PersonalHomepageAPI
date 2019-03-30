@@ -8,31 +8,31 @@ const router = express.Router();
 
 // scope specific middleware
 router.use((req, res, next) => {
-    next();
+	next();
 });
 
 router.get('/getUserOAuth2Url', (req, res) => {
-    const authorizationUrl = new GoogleOAuthService(credentialsConfig.google, logger).getUserAuth2Url();
-    res.json({ url: authorizationUrl });
+	const authorizationUrl = new GoogleOAuthService(credentialsConfig.google, logger).getUserAuth2Url();
+	res.json({ url: authorizationUrl });
 });
 
 router.get('/getTokenFromCode', (req, res) => {
-    if (req.query.code) {
-        const code = req.query.code;
-        new GoogleOAuthService(credentialsConfig.google, logger).getTokenFromCode(code).then((codeResp) => {
-            logger.info(`End Request: ${req.originalUrl} - Redirected to ${webConfig().clientHostname}` +
-                        `/googleAuth?uid=${codeResp}`);
-            res.redirect(`${webConfig().clientHostname}/googleAuth?uid=${codeResp}`);
-        }).catch((err) => {
-            logger.info(`End Request: ${req.originalUrl} - Redirected to ${webConfig().clientHostname}` +
-                        `/error?err=${err}`);
-            res.redirect(`${webConfig().clientHostname}/error?err=${err}`);
-        });
-    } else {
-        logger.info(`End Request: ${req.originalUrl} - Redirected to ${webConfig().clientHostname}` +
-                    `/error?err=${errorConfig.codeParamRequired}`);
-        res.redirect(`${webConfig().clientHostname}/error?err=${errorConfig.codeParamRequired}`);
-    }
+	if (req.query.code) {
+		const code = req.query.code;
+		new GoogleOAuthService(credentialsConfig.google, logger).getTokenFromCode(code).then((codeResp) => {
+			logger.info(`End Request: ${req.originalUrl} - Redirected to ${webConfig().clientHostname}` +
+						`/googleAuth?uid=${codeResp}`);
+			res.redirect(`${webConfig().clientHostname}/googleAuth?uid=${codeResp}`);
+		}).catch((err) => {
+			logger.info(`End Request: ${req.originalUrl} - Redirected to ${webConfig().clientHostname}` +
+						`/error?err=${err}`);
+			res.redirect(`${webConfig().clientHostname}/error?err=${err}`);
+		});
+	} else {
+		logger.info(`End Request: ${req.originalUrl} - Redirected to ${webConfig().clientHostname}` +
+					`/error?err=${errorConfig.codeParamRequired}`);
+		res.redirect(`${webConfig().clientHostname}/error?err=${errorConfig.codeParamRequired}`);
+	}
 });
 
 module.exports = router;

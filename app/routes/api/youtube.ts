@@ -10,14 +10,14 @@ const router = express.Router();
 
 // scope specific middleware
 router.use((req, res, next) => {
-    logger.info('Start: GoogleOAuthService().checkGapiAuth()');
-    new GoogleOAuthService(credentialsConfig.google, logger).checkOAuth(req, res, next);
+	logger.info('Start: GoogleOAuthService().checkGapiAuth()');
+	new GoogleOAuthService(credentialsConfig.google, logger).checkOAuth(req, res, next);
 });
 
 router.get('/subscription', (req, res) => {
-    new YoutubeService(new GoogleApis()).getSubscriptionVidoes(res.locals.authResp)
-        .then((apiResp) => res.apiResponse(apiResp))
-        .catch((apiErr) => res.apiError(apiErr));
+	new YoutubeService(new GoogleApis()).getSubscriptionVidoes(res.locals.authResp)
+		.then((apiResp) => res.apiResponse(apiResp))
+		.catch((apiErr) => res.apiError(apiErr));
 });
 
 module.exports = router;

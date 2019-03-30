@@ -19,7 +19,9 @@
         "ordered-imports": [true, {
             "import-sources-order": "any",
             "named-imports-order": "case-insensitive"
-        }]
+        }],
+        "indent": [true, "tabs"],
+        "max-line-length": [true, 140]
     },
     "rulesDirectory": []
 }

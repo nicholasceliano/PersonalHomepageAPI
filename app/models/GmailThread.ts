@@ -1,5 +1,5 @@
 type GmailThread = {
-    id?: string;
-    historyId?: string;
-    messages: GmailEmail[];
+	id?: string;
+	historyId?: string;
+	messages: GmailEmail[];
 };

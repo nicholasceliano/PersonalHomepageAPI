@@ -1,40 +1,40 @@
 {
-  "name": "personalhomepageapi",
-  "version": "1.0.0",
-  "description": "",
-  "main": "/build/app.js",
-  "scripts": {
-    "start": "node build/app.js",
-    "test": "mocha 'app/test/{,!(routes)/**}/*.test.js'",
-    "testAPIs": "mocha 'app/test/routes/*.test.js'",
-    "tsc": "tsc",
-    "lint": "tslint 'app/**/*.ts' 'app/test/**/*.js'",
-    "build": "npm run lint app/**/*.ts & npm run tsc & npm tes & npm run testAPIs"
-  },
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "@types/express": "^4.16.1",
-    "@types/mysql": "^2.15.5",
-    "@types/request": "^2.48.1",
-    "cookie-parser": "^1.4.4",
-    "express": "^4.16.4",
-    "google-auth-library": "^3.1.1",
-    "googleapis": "^38.0.0",
-    "mysql": "^2.16.0",
-    "opn": "^5.4.0",
-    "request": "^2.88.0",
-    "typescript": "^3.3.4000",
-    "uuid": "^3.3.2",
-    "winston": "^3.2.1"
-  },
-  "devDependencies": {
-    "@types/cookie-parser": "^1.4.1",
-    "@types/mocha": "^5.2.6",
-    "@types/uuid": "^3.4.4",
-    "chai": "^4.2.0",
-    "chai-http": "^4.2.1",
-    "mocha": "^6.0.2",
-    "tslint": "^5.14.0"
-  }
+	"name": "personalhomepageapi",
+	"version": "1.0.0",
+	"description": "",
+	"main": "/build/app.js",
+	"scripts": {
+		"start": "node build/app.js",
+		"test": "mocha 'app/test/{,!(routes)/**}/*.test.js'",
+		"testAPIs": "mocha 'app/test/routes/*.test.js'",
+		"tsc": "tsc",
+		"lint": "tslint 'app/**/*.ts' 'app/test/**/*.js'",
+		"build": "npm run lint app/**/*.ts & npm run tsc & npm tes & npm run testAPIs"
+	},
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"@types/express": "^4.16.1",
+		"@types/mysql": "^2.15.5",
+		"@types/request": "^2.48.1",
+		"cookie-parser": "^1.4.4",
+		"express": "^4.16.4",
+		"google-auth-library": "^3.1.1",
+		"googleapis": "^38.0.0",
+		"mysql": "^2.16.0",
+		"opn": "^5.4.0",
+		"request": "^2.88.0",
+		"typescript": "^3.3.4000",
+		"uuid": "^3.3.2",
+		"winston": "^3.2.1"
+	},
+	"devDependencies": {
+		"@types/cookie-parser": "^1.4.1",
+		"@types/mocha": "^5.2.6",
+		"@types/uuid": "^3.4.4",
+		"chai": "^4.2.0",
+		"chai-http": "^4.2.1",
+		"mocha": "^6.0.2",
+		"tslint": "^5.14.0"
+	}
 }

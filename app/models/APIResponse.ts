@@ -1,5 +1,5 @@
 type APIResponse = {
-    err: boolean;
-    msg: string;
-    data: object;
+	err: boolean;
+	msg: string;
+	data: object;
 };

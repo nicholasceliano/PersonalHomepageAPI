@@ -22,8 +22,8 @@ app.use('/api/location', require('./routes/api/location'));
 app.use('/api/currency', require('./routes/api/currency'));
 
 app.use((error, req, res, next) => { // Exception Middleware. Needs to come after routes
-    logger.error(error);
-    next();
+	logger.error(error);
+	next();
 });
 
 module.exports = app.listen(webConfig().port, () => logger.info(`App listening on port ${webConfig().port}!`));

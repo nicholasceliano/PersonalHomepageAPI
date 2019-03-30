@@ -1,8 +1,8 @@
 type Address = {
-    city: string;
-    country: string;
-    county: string;
-    state: string;
-    state_abbr?: string;
-    postcode: string;
+	city: string;
+	country: string;
+	county: string;
+	state: string;
+	stateAbbr?: string;
+	postcode: string;
 };
