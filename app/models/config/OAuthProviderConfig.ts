@@ -6,6 +6,5 @@ type OAuthProviderConfig = {
 	TOKEN_FILENAME: string;
 	SCOPES: string[];
 	ACCESS_TYPE: string;
-	CLIENT_COOKIE_NAME: string;
 	URIS?: any;
 };

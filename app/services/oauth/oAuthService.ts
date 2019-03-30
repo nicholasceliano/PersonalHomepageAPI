@@ -1,6 +1,6 @@
 import fs = require('fs');
 import uuidv4 from 'uuid/v4';
-import { errorConfig } from '../../config';
+import { errorConfig, webConfig } from '../../config';
 import { NextFunction } from 'connect';
 import { Logger } from 'winston';
 
@@ -19,7 +19,7 @@ export abstract class OAuthService {
 	public abstract getTokenFromCode(code: string): Promise<string>;
 
 	public checkOAuth(req: Express.Request, res: Express.Response, next: NextFunction) {
-		const tokenUserAuthUID = req.cookies[this.parentConfig.CLIENT_COOKIE_NAME];
+		const tokenUserAuthUID = req.header(webConfig().oAuthIDHeaderName);
 
 		if (tokenUserAuthUID !== undefined && !Array.isArray(tokenUserAuthUID)) {
 			this.checkForUsersToken(tokenUserAuthUID).then((authResp) => {
@@ -27,7 +27,7 @@ export abstract class OAuthService {
 				next();
 			}).catch((authErr) => res.apiError(authErr));
 		} else {
-			res.apiError(`${this.parentConfig.CLIENT_COOKIE_NAME} ${errorConfig.httpHeaderMissing}`);
+			res.apiError(`${webConfig().oAuthIDHeaderName} ${errorConfig.httpHeaderMissing}`);
 		}
 	}
 

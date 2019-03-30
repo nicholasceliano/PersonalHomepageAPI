@@ -25,13 +25,13 @@ router.get('/getTokenFromCode', (req, res) => {
 			res.redirect(`${webConfig().clientHostname}/googleAuth?uid=${codeResp}`);
 		}).catch((err) => {
 			logger.info(`End Request: ${req.originalUrl} - Redirected to ${webConfig().clientHostname}` +
-						`/error?err=${err}`);
-			res.redirect(`${webConfig().clientHostname}/error?err=${err}`);
+						`/oautherror?e=${err}&o=Google`);
+			res.redirect(`${webConfig().clientHostname}/oautherror?e=${err}&o=Google`);
 		});
 	} else {
 		logger.info(`End Request: ${req.originalUrl} - Redirected to ${webConfig().clientHostname}` +
-					`/error?err=${errorConfig.codeParamRequired}`);
-		res.redirect(`${webConfig().clientHostname}/error?err=${errorConfig.codeParamRequired}`);
+					`/oautherror?e=${errorConfig.codeParamRequired}&o=Google`);
+		res.redirect(`${webConfig().clientHostname}/oautherror?e=${errorConfig.codeParamRequired}&o=Google`);
 	}
 });
 

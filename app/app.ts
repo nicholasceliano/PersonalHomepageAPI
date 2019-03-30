@@ -1,4 +1,3 @@
-import cookieParser = require('cookie-parser');
 import express = require('express');
 import { webConfig } from '../build/config';
 import { loggers } from 'winston';
@@ -11,7 +10,6 @@ require('./appMiddleware')(app);
 require('./extensions/ArrayExt');
 require('./extensions/NumberExt');
 
-app.use(cookieParser());
 app.use('/oauth/google', require('./routes/oauth/google'));
 app.use('/oauth/twitch', require('./routes/oauth/twitch'));
 app.use('/api/gmail', require('./routes/api/gmail'));
