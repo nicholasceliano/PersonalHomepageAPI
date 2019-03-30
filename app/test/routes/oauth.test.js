@@ -31,4 +31,28 @@ describe("OAuth API", function() {
             });
         });
     });
+    describe("twitch", function() {
+        it("returns an oauth2 Url for user", function(done) {
+            chai.request(app).get("/oauth/twitch/getUserOAuth2Url")
+            .then(res => {
+                expect(res).to.have.status(200);
+                expect(res).to.be.an("object");
+                expect(res.body.url).to.be.a("string").to.have.lengthOf.above(1);
+                done();
+            });
+        });
+        it("redirects to error page because missing code", function(done) {
+            chai.request(app).get("/oauth/twitch/getTokenFromCode").redirects(0).end((err, res) => {
+                res.should.redirectTo("http://localhost:4200/error?err=%22Code%22%20query%20param%20is%20required");
+                done();
+            });
+        });
+        it("redirects to error page because bad code", function(done) {
+            chai.request(app).get("/oauth/twitch/getTokenFromCode?code=asdqwe").redirects(0).end((err, res) => {
+                res.should.redirectTo("http://localhost:4200/error?err=Token%20is%20invalid,%20no%20" +
+                                        "access_token%20property.");
+                done();
+            });
+        });
+    });
 });

@@ -175,6 +175,32 @@ describe("API", function() {
             });
         });
     });
+    describe("Twitch", function() {
+        it("returns an error because no oAuth Token", function(done) {
+            chai.request(app).get("/api/twitch/followedStreams")
+            .then(res => {
+                expect(res).to.have.status(200);
+                expect(res).to.be.an("object");
+                expect(res.body.err).to.equal(true);
+                expect(res.body.msg).to.equal("The API returned an error: twitchAuthUID HttpHeader variable " +
+                                                "missing or malformed.");
+                expect(res.body.data).to.be.an("array").to.have.lengthOf(0);
+                done();
+            });
+        });
+        it("returns an error because no oAuth Token", function(done) {
+            chai.request(app).get("/api/twitch/followedStreams")
+            .set("Cookie", "twitchAuthUID=11111111-1111-1111-1111-111111111111")
+            .then(res => {
+                expect(res).to.have.status(200);
+                expect(res).to.be.an("object");
+                expect(res.body.err).to.equal(true);
+                expect(res.body.msg).to.equal("The API returned an error: No Token: Login Required.");
+                expect(res.body.data).to.be.an("array").to.have.lengthOf(0);
+                done();
+            });
+        });
+    });
     describe("Youtube", function() {
         it("returns an error because no oAuth Token", function(done) {
             chai.request(app).get("/api/youtube/subscription")

@@ -1,13 +1,13 @@
 var config = require("../../../../build/config");
 var expect = require("chai").expect;
-var GoogleOAuthService = require("../../../../build/services/oauth/googleOAuthService").GoogleOAuthService;
+var TwitchOAuthService = require("../../../../build/services/oauth/twitchOAuthService").TwitchOAuthService;
 var logger = require("winston");
 
-describe("GoogleOAuthService", function() {
+describe("TwitchOAuthService", function() {
     describe("checkForUsersToken", function() {
         it("expect error because no token is associted with AuthUID", function(done) {
             //checkForUsersToken -- expect error No Token file: Login Required.
-            new GoogleOAuthService(config.credentialsConfig.google, logger).checkForUsersToken("asd123")
+            new TwitchOAuthService(config.credentialsConfig.twitch, logger).checkForUsersToken("asd123")
             .then()
             .catch(err => {
                 expect(err).to.be.a("string");
@@ -17,20 +17,19 @@ describe("GoogleOAuthService", function() {
         });
     });
     describe("getUserAuth2Url", function() {
-        it("expect url to googles oauth login page", function(done) {
-            var url = new GoogleOAuthService(config.credentialsConfig.google, logger).getUserAuth2Url();
-            expect(url).to.be.a("string").to.include("https://accounts.google.com/o/oauth2/v2/auth?");
+        it("expect url to twitch oauth login page", function(done) {
+            var url = new TwitchOAuthService(config.credentialsConfig.twitch, logger).getUserAuth2Url();
+            expect(url).to.be.a("string").to.include("https://id.twitch.tv/oauth2");
             done();
         });
     });
     describe("getTokenFromCode", function() {
         it("expect error because code is not valid", function(done) {
-            //getTokenFromCode -- expect error that codeis bad
-            new GoogleOAuthService(config.credentialsConfig.google, logger).getTokenFromCode("asdb1234")
+            new TwitchOAuthService(config.credentialsConfig.twitch, logger).getTokenFromCode("asdb1234")
             .then()
             .catch(err => {
                 expect(err).to.be.a("string");
-                expect(err).to.equal("Error retrieving access token Error: invalid_grant");
+                expect(err).to.equal("Token is invalid, no access_token property.");
                 done();
             });
         });
