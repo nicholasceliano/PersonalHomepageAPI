@@ -26,4 +26,28 @@ export class TwitchOAuthService extends OAuthService {
 				});
 		});
 	}
+
+	protected mapToOAuthToken(tokenObj: any) {
+		return {
+			access_token: tokenObj.access_token,
+			expiry_date: (new Date().getTime() + (tokenObj.expires_in * 1000)),
+			refresh_token: tokenObj.refresh_token,
+			scope: tokenObj.scope,
+			token_type: tokenObj.token_type,
+		} as OAuthToken;
+	}
+
+	protected refreshToken(token: OAuthToken): Promise<OAuthToken> {
+		return new Promise((resolve, reject) => {
+			request.post(`${this.config.URIS.TwitchAuthUri}/token?grant_type=refresh_token&` +
+					`refresh_token=${token.refresh_token}&client_id=${this.config.CLIENT_ID}&client_secret=${this.config.CLIENT_SECRET}`,
+			(err, res, body) => {
+				if (err) reject(err);
+
+				const refreshedToken = this.mapToOAuthToken(JSON.parse(body));
+
+				resolve(refreshedToken);
+			});
+		});
+	}
 }

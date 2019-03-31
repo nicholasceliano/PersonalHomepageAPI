@@ -32,8 +32,18 @@ export class GoogleOAuthService extends OAuthService {
 		});
 	}
 
-	protected setResponseToken(res: Express.Response, authResp) {
+	protected setResponseToken(res: Express.Response, authResp: OAuthToken) {
 		this.oAuth2Client.setCredentials(authResp);
 		res.locals.authResp = this.oAuth2Client;
+	}
+
+	protected refreshToken(token: OAuthToken): Promise<OAuthToken> {
+		return new Promise((resolve, reject) => {
+			this.oAuth2Client.getTokenInfo(token.access_token).then((res) => {
+				token.expiry_date = res.expiry_date;
+
+				resolve(token);
+			}).catch((err) => reject(err));
+		});
 	}
 }

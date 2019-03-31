@@ -3,5 +3,7 @@
 /build
 /oauthData
 token.json
+app/config.dev.ts
+app/config.prod.ts
 app/config.ts
 /logs

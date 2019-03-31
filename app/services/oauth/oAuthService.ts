@@ -31,14 +31,23 @@ export abstract class OAuthService {
 		}
 	}
 
-	public checkForUsersToken(tokenUserAuthUID: string): Promise<object> {
+	public checkForUsersToken(tokenUserAuthUID: string): Promise<OAuthToken> {
 		const _this = this;
 		// Check if we have previously stored a token.
 		return new Promise((resolve, reject) => {
 			fs.readFile(`${_this.parentConfig.TOKEN_PATH}${tokenUserAuthUID}-${_this.parentConfig.TOKEN_FILENAME}`, (err, token) => {
 				if (err) return reject(errorConfig.noTokenLoginReq);
 
-				const parsedToken = JSON.parse(token.toString());
+				const parsedToken: OAuthToken = JSON.parse(token.toString());
+
+				if (parsedToken.expiry_date <= new Date().getTime()) {
+					this.refreshToken(parsedToken).then((tokenRes) => {
+						this.writeTokenToFile(tokenUserAuthUID, tokenRes)
+						.then(() => resolve(tokenRes))
+						.catch((writeErr) => reject(writeErr));
+					}).catch((tokenErr) => reject(tokenErr));
+				}
+
 				this.parentLogger.info(`Next: OAuthService.checkForUsersToken: OAuth Credentials set to token ${parsedToken}`);
 				resolve(parsedToken);
 			});
@@ -66,18 +75,40 @@ export abstract class OAuthService {
 				fs.mkdirSync(this.parentConfig.TOKEN_PATH, { recursive: true });
 			}
 
-			fs.writeFile(`${this.parentConfig.TOKEN_PATH}${tokenRefID}-${this.parentConfig.TOKEN_FILENAME}`, JSON.stringify(tokenObj),
-			(fsErr) => {
-				if (fsErr) reject(fsErr);
-				this.parentLogger.info(`OAuthService.getTokenFromCode: Token stored to ` +
-							`${this.parentConfig.TOKEN_PATH}${tokenRefID}-${this.parentConfig.TOKEN_FILENAME}`);
-			});
+			const tokenJSON: OAuthToken = this.mapToOAuthToken(tokenObj);
 
-			resolve(tokenRefID);
+			this.writeTokenToFile(tokenRefID, tokenJSON)
+			.then(() => resolve(tokenRefID))
+			.catch((writeErr) => reject(writeErr));
 		} else reject(errorConfig.noToken);
 	}
 
-	protected setResponseToken(res: Express.Response, authResp) {
+	protected abstract refreshToken(token: OAuthToken): Promise<OAuthToken>;
+
+	protected setResponseToken(res: Express.Response, authResp: OAuthToken) {
 		res.locals.authResp = authResp;
+	}
+
+	protected mapToOAuthToken(tokenObj: any) {
+		return {
+			access_token: tokenObj.access_token,
+			expiry_date: tokenObj.expiry_date,
+			refresh_token: tokenObj.refresh_token,
+			scope: tokenObj.scope,
+			token_type: tokenObj.token_type,
+		} as OAuthToken;
+	}
+
+	private writeTokenToFile(tokenRefID: string, tokenJSON: OAuthToken): Promise<any> {
+		const _this = this;
+		return new Promise((resolve, reject) => {
+			fs.writeFile(`${_this.parentConfig.TOKEN_PATH}${tokenRefID}-${_this.parentConfig.TOKEN_FILENAME}`, JSON.stringify(tokenJSON),
+				(fsErr) => {
+					if (fsErr) reject(fsErr);
+					_this.parentLogger.info(`OAuthService.getTokenFromCode: Token stored to ` +
+								`${_this.parentConfig.TOKEN_PATH}${tokenRefID}-${_this.parentConfig.TOKEN_FILENAME}`);
+					resolve();
+			});
+		});
 	}
 }
