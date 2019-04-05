@@ -40,7 +40,8 @@ export class GoogleOAuthService extends OAuthService {
 	protected refreshToken(token: OAuthToken): Promise<OAuthToken> {
 		return new Promise((resolve, reject) => {
 			this.oAuth2Client.getTokenInfo(token.access_token).then((res) => {
-				token.expiry_date = res.expiry_date;
+				token.expiry_date = res.expiry_date; // google-auth-library auto refreshses tokens
+													// so just need to update the expiry date of our local token for housekeeping
 
 				resolve(token);
 			}).catch((err) => reject(err));

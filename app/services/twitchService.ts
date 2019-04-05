@@ -4,7 +4,7 @@ export class TwitchService {
 
 	constructor(private config: OAuthProviderConfig) {}
 
-	public getFollowedStreams(authJSON): Promise<TwitchStream[]> {
+	public getFollowedStreams(authJSON: OAuthToken): Promise<TwitchStream[]> {
 		return new Promise((resolve, reject) => {
 			const httpOptions = {
 				headers: {
@@ -35,6 +35,28 @@ export class TwitchService {
 				}
 
 				resolve(streams);
+			});
+		});
+	}
+
+	public getUserInfo(authJSON: OAuthToken): Promise<TwitchUser> {
+		return new Promise((resolve, reject) => {
+			const httpOptions = {
+				headers: {
+					'Authorization': `OAuth ${authJSON.access_token}`,
+					'Client-ID': this.config.CLIENT_ID,
+				},
+				url: `${this.config.URIS.TwitchAPIv5Uri}/user`,
+			};
+
+			request.get(httpOptions, (err, res, body) => {
+				if (err) return reject(err);
+				const respBody = JSON.parse(body);
+
+				resolve({
+					name: respBody.name,
+					token: authJSON.access_token,
+				} as TwitchUser);
 			});
 		});
 	}

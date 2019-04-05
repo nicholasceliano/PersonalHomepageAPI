@@ -19,4 +19,10 @@ router.get('/followedStreams', (req, res) => {
 		.catch((apiErr) => res.apiError(apiErr));
 });
 
+router.get('/userInfo', (req, res) => {
+	new TwitchService(credentialsConfig.twitch).getUserInfo(res.locals.authResp)
+		.then((apiResp) => res.apiResponse(apiResp))
+		.catch((apiErr) => res.apiError(apiErr));
+});
+
 module.exports = router;
