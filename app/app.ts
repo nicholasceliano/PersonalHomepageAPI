@@ -18,6 +18,7 @@ app.use('/api/twitch', require('./routes/api/twitch'));
 app.use('/api/weather', require('./routes/api/weather'));
 app.use('/api/location', require('./routes/api/location'));
 app.use('/api/currency', require('./routes/api/currency'));
+app.use('/api/files', require('./routes/api/files'));
 
 app.use((error, req, res, next) => { // Exception Middleware. Needs to come after routes
 	logger.error(error);

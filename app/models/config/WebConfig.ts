@@ -6,4 +6,5 @@ type WebConfig = {
 	hostname: string;
 	clientHostname: string;
 	env: string;
+	fileLocations: FileLocationsConfig;
 };

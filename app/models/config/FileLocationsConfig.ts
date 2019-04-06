@@ -1,0 +1,3 @@
+type FileLocationsConfig = {
+	tabsDirectory: string,
+};
