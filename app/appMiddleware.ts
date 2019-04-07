@@ -23,7 +23,7 @@ module.exports = (app: express.Express) => {
 		res.apiError = (error: string) => {
 			logger.info(`End Request: ${req.originalUrl} - API Error: ${JSON.stringify(error)}`);
 			return res.json({
-				data: [],
+				data: null,
 				err: true,
 				msg: 'The API returned an error: ' + error,
 			} as APIResponse);

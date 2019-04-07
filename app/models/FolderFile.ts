@@ -5,4 +5,5 @@ type FolderFile = {
 	size: string;
 	createDate: Date;
 	editDate: Date;
+	fileData?: string;
 };
