@@ -17,7 +17,7 @@ router.get('/guitarTabs', (req, res) => {
 });
 
 router.get('/openFile', (req, res) => {
-	const type = parseInt(req.query.type);
+	const type = parseInt(req.query.type, 10);
 	const path = req.query.path;
 	const fileName = req.query.fileName;
 	if (type && path && fileName) {

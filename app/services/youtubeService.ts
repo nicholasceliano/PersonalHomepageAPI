@@ -41,45 +41,43 @@ export class YoutubeService {
 	}
 
 	private GetUploadPlaylistIdsFromChannelIds(youtube: youtube_v3.Youtube, channelIds: string[]): Promise<string[]> {
-		const promises: Array<Promise<string>> = [];
-
-		channelIds.forEach((channelId) => {
-			promises.push(new Promise((resolve, reject) => {
-				youtube.channels.list({ id: channelId, part: 'contentDetails' },
-				(err, res) => {
-					if (err) return reject(err);
-					if (res && res.data.items && res.data.items.length === 1 && res.data.items[0].contentDetails &&
-					res.data.items[0].contentDetails.relatedPlaylists &&
-					res.data.items[0].contentDetails.relatedPlaylists.uploads) {
-						const uploadPlaylistId: string = res.data.items[0].contentDetails.relatedPlaylists.uploads;
-						resolve(uploadPlaylistId);
-					} else reject(err);
-				});
-			}));
+		return new Promise((resolve, reject) => {
+			youtube.channels.list({ id: channelIds.join(','), part: 'id' },
+			(err, res) => {
+				if (err) return reject(err);
+				const uploadPlaylistIds: string[] = [];
+				if (res && res.data.items) {
+					res.data.items.forEach((item) => {
+						if (item.id) {
+							const uploadsId = `${item.id.substring(0, 1)}U${item.id.substring(2, item.id.length)}`;
+							uploadPlaylistIds.push(uploadsId);
+						} else reject(err);
+					});
+				}
+				resolve(uploadPlaylistIds);
+			});
 		});
-
-		return Promise.all(promises);
 	}
 
 	private GetPlaylistItemsFromPlaylistIds(youtube: youtube_v3.Youtube, playlistIds: string[]): Promise<YoutubePlaylistItem[][]> {
 		const promises: Array<Promise<YoutubePlaylistItem[]>> = [];
 
-		playlistIds.forEach((pId) => {
+		playlistIds.forEach((pId) => { // playlistItems 'id' parameter not working, so need to loop and use 'playlistId'
 			promises.push(new Promise((resolve, reject) => {
-				youtube.playlistItems.list({ playlistId: pId, part: 'snippet,contentDetails', maxResults: 10 },
+				youtube.playlistItems.list({ playlistId: pId, part: 'snippet', maxResults: 10 },
 				(err, res) => {
 					const playlistItems: YoutubePlaylistItem[] = [];
 					if (err) return reject(err);
 					if (res && res.data.items) {
 						res.data.items.forEach((item) => {
-							if (item.contentDetails && item.snippet && item.snippet.thumbnails) {
+							if (item.snippet && item.snippet.thumbnails && item.snippet.resourceId) {
 								playlistItems.push({
 									channelTitle: item.snippet.channelTitle,
 									thumbnail: item.snippet.thumbnails.default,
-									videoDate: item.contentDetails.videoPublishedAt ?
-										new Date(item.contentDetails.videoPublishedAt) : new Date(),
+									videoDate: item.snippet.publishedAt ?
+										new Date(item.snippet.publishedAt) : new Date(),
 									videoDesc: item.snippet.description,
-									videoId: item.contentDetails.videoId,
+									videoId: item.snippet.resourceId.videoId,
 									videoTitle: item.snippet.title,
 								});
 							}
