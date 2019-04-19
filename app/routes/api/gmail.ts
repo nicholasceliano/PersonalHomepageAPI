@@ -14,13 +14,13 @@ router.use((req, res, next) => {
 	new GoogleOAuthService(credentialsConfig.google, logger).checkOAuth(req, res, next);
 });
 
-router.get('/unreadEmails', (req, res) => {
-	new GmailService(new GoogleApis()).getUnreadEmails(res.locals.authResp)
+router.get('/unreadThreads', (req, res) => {
+	new GmailService(new GoogleApis()).getUnreadEmailThreads(res.locals.authResp)
 		.then((apiResp) => res.apiResponse(apiResp))
 		.catch((apiErr) => res.apiError(apiErr));
 });
 
-router.put('/readEmail/:id', (req, res) => {
+router.put('/readThread/:id', (req, res) => {
 	new GmailService(new GoogleApis()).updateEmailThreadAsRead(res.locals.authResp, req.params.id)
 		.then((apiResp) => res.apiResponse(apiResp))
 		.catch((apiErr) => res.apiError(apiErr));

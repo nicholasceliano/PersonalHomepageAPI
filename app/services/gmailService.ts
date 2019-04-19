@@ -31,7 +31,7 @@ export class GmailService {
 		});
 	}
 
-	public getUnreadEmails(auth: OAuth2Client): Promise<object> {
+	public getUnreadEmailThreads(auth: OAuth2Client): Promise<object> {
 		const _this = this;
 		const gmail = this.google.gmail({version: 'v1', auth});
 
