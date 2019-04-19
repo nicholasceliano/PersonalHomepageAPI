@@ -13,7 +13,7 @@ module.exports = (app: express.Express) => {
 		// check if CORS preflight
 		if (req.header('Access-Control-Request-Method') && req.method === 'OPTIONS' && req.header('Origin')) {
 			res.header('Access-Control-Allow-Credentials', 'true');
-			res.header('Access-Control-Allow-Methods', 'GET');
+			res.header('Access-Control-Allow-Methods', 'GET,PUT');
 			res.header('Access-Control-Allow-Headers', `Origin, X-Requested-With, Content-Type, Accept, ${webConfig().oAuthIDHeaderName}`);
 
 			logger.info(`End Request: ${req.originalUrl} - CORS Preflight`);
