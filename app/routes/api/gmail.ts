@@ -20,4 +20,10 @@ router.get('/unreadEmails', (req, res) => {
 		.catch((apiErr) => res.apiError(apiErr));
 });
 
+router.put('/readEmail/:id', (req, res) => {
+	new GmailService(new GoogleApis()).updateEmailThreadAsRead(res.locals.authResp, req.params.id)
+		.then((apiResp) => res.apiResponse(apiResp))
+		.catch((apiErr) => res.apiError(apiErr));
+});
+
 module.exports = router;

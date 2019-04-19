@@ -1,9 +1,35 @@
 import { gmail_v1, GoogleApis } from 'googleapis';
 import { OAuth2Client } from 'googleapis-common';
+import { errorConfig } from '../config';
 
 export class GmailService {
 
 	constructor(private google: GoogleApis) {}
+
+	public updateEmailThreadAsRead(auth: OAuth2Client, emailId: string): Promise<object> {
+		const gmail = this.google.gmail({version: 'v1', auth});
+
+		return new Promise((resolve, reject) => {
+			gmail.users.threads.modify({
+				id: emailId,
+				requestBody: {
+					addLabelIds: [],
+					removeLabelIds: ['UNREAD'],
+				},
+				userId: 'me',
+			}, (err, res) => {
+				if (err) return reject(err);
+
+				if (res) {
+					if (res.data.id === emailId) {
+						resolve(res.data);
+					} else {
+						reject(errorConfig.backendError());
+					}
+				}
+			});
+		});
+	}
 
 	public getUnreadEmails(auth: OAuth2Client): Promise<object> {
 		const _this = this;
