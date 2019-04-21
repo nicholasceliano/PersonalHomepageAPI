@@ -1,7 +1,9 @@
 import express = require('express');
+import path = require('path');
 import { webConfig } from '../build/config';
 import { loggers } from 'winston';
 
+global.appRoot = path.resolve(__dirname);
 require('./logger');
 
 const app = express();

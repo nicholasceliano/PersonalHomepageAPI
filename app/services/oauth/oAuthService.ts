@@ -1,4 +1,5 @@
 import fs = require('fs');
+import path = require('path');
 import uuidv4 from 'uuid/v4';
 import { errorConfig, webConfig } from '../../config';
 import { NextFunction } from 'connect';
@@ -35,7 +36,8 @@ export abstract class OAuthService {
 		const _this = this;
 		// Check if we have previously stored a token.
 		return new Promise((resolve, reject) => {
-			fs.readFile(`${_this.parentConfig.TOKEN_PATH}${tokenUserAuthUID}-${_this.parentConfig.TOKEN_FILENAME}`, (err, token) => {
+			fs.readFile(path.join(global.appRoot, '..', `${_this.parentConfig.TOKEN_PATH}`,
+											`${tokenUserAuthUID}-${_this.parentConfig.TOKEN_FILENAME}`), (err, token) => {
 				if (err) return reject(errorConfig.noTokenLoginReq);
 
 				const parsedToken: OAuthToken = JSON.parse(token.toString());
@@ -71,8 +73,8 @@ export abstract class OAuthService {
 				reject(errorConfig.invalidToken);
 			}
 
-			if (!fs.existsSync(this.parentConfig.TOKEN_PATH)) { // creates folders if they dont exist
-				fs.mkdirSync(this.parentConfig.TOKEN_PATH, { recursive: true });
+			if (!fs.existsSync(path.join(global.appRoot, '..', `${this.parentConfig.TOKEN_PATH}`))) { // creates folders if they dont exist
+				fs.mkdirSync(path.join(global.appRoot, '..', `${this.parentConfig.TOKEN_PATH}`), { recursive: true });
 			}
 
 			const tokenJSON: OAuthToken = this.mapToOAuthToken(tokenObj);
@@ -102,11 +104,12 @@ export abstract class OAuthService {
 	private writeTokenToFile(tokenRefID: string, tokenJSON: OAuthToken): Promise<any> {
 		const _this = this;
 		return new Promise((resolve, reject) => {
-			fs.writeFile(`${_this.parentConfig.TOKEN_PATH}${tokenRefID}-${_this.parentConfig.TOKEN_FILENAME}`, JSON.stringify(tokenJSON),
+			const pathLocation = path.join(global.appRoot, '..', `${_this.parentConfig.TOKEN_PATH}`,
+											`${tokenRefID}-${_this.parentConfig.TOKEN_FILENAME}`);
+			fs.writeFile(pathLocation, JSON.stringify(tokenJSON),
 				(fsErr) => {
 					if (fsErr) reject(fsErr);
-					_this.parentLogger.info(`OAuthService.getTokenFromCode: Token stored to ` +
-								`${_this.parentConfig.TOKEN_PATH}${tokenRefID}-${_this.parentConfig.TOKEN_FILENAME}`);
+					_this.parentLogger.info(`OAuthService.getTokenFromCode: Token stored to ${pathLocation}`);
 					resolve();
 			});
 		});

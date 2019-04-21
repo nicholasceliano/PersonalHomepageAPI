@@ -1,4 +1,5 @@
 import { webConfig } from '../build/config';
+import path = require('path');
 import { format, loggers, transports } from 'winston';
 const { combine, label, timestamp, printf  } = format;
 
@@ -16,7 +17,7 @@ loggers.add('logger', {
 	),
 	transports: [
 		// new (transports.Console)(),
-		new (transports.File)({ filename: `${webConfig().logLocation}/error.log`, level: 'error' }),
-		new (transports.File)({ filename: `${webConfig().logLocation}/info.log`, level: 'info' }),
+		new (transports.File)({ filename: path.join(global.appRoot, '..', webConfig().logLocation, 'error.log'), level: 'error' }),
+		new (transports.File)({ filename: path.join(global.appRoot, '..', webConfig().logLocation, 'info.log'), level: 'info' }),
 	],
 });
