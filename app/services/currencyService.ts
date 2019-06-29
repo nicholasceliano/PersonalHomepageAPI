@@ -21,11 +21,16 @@ export class CurrencyService {
 					else symbols.push(dbr.stockName);
 
 					stockQuoteData.push({
+						currPriceDate: dbr.lastPriceDate,
+						currPriceVal: dbr.lastPriceVal,
 						lastPriceDate: dbr.lastPriceDate,
 						lastPriceVal: dbr.lastPriceVal,
 						lastStockVal: dbr.stockVal,
 						stockName: dbr.stockName,
 						stockQty: dbr.stockQty,
+						priceDiffPercent: this.helper.calculatePercentChange(dbr.lastPriceVal, dbr.currPriceVal),
+						currStockVal: dbr.lastPriceVal * dbr.stockQty,
+						dateDiff: this.helper.daysBetweenDates(dbr.lastPriceDate, dbr.currPriceDate),
 					});
 				}
 
