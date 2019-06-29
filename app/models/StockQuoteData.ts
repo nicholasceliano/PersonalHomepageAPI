@@ -9,4 +9,5 @@ type StockQuoteData = {
 	currPriceDate?: Date;
 	priceDiffPercent?: number;
 	dateDiff?: string;
+	quoteExists: boolean;
 };

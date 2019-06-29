@@ -21,16 +21,12 @@ export class CurrencyService {
 					else symbols.push(dbr.stockName);
 
 					stockQuoteData.push({
-						currPriceDate: dbr.lastPriceDate,
-						currPriceVal: dbr.lastPriceVal,
 						lastPriceDate: dbr.lastPriceDate,
 						lastPriceVal: dbr.lastPriceVal,
 						lastStockVal: dbr.stockVal,
 						stockName: dbr.stockName,
 						stockQty: dbr.stockQty,
-						priceDiffPercent: this.helper.calculatePercentChange(dbr.lastPriceVal, dbr.currPriceVal),
-						currStockVal: dbr.lastPriceVal * dbr.stockQty,
-						dateDiff: this.helper.daysBetweenDates(dbr.lastPriceDate, dbr.currPriceDate),
+						quoteExists: false,
 					});
 				}
 
@@ -100,6 +96,8 @@ export class CurrencyService {
 				}
 
 				if (d.currPriceDate) d.dateDiff = this.helper.daysBetweenDates(d.lastPriceDate, d.currPriceDate);
+
+				d.quoteExists = true;
 			}
 		});
 		return stockQuoteData;
@@ -118,9 +116,18 @@ export class CurrencyService {
 					}
 
 					if (d.currPriceDate) d.dateDiff = this.helper.daysBetweenDates(d.lastPriceDate, d.currPriceDate);
-
+					
+					d.quoteExists = true;
 					break;
 				}
+			}
+
+			if (!d.quoteExists) {
+				d.currPriceVal = d.lastPriceVal;
+				d.currPriceDate = d.lastPriceDate;
+				d.priceDiffPercent = this.helper.calculatePercentChange(d.lastPriceVal, d.currPriceVal);
+				d.currStockVal = d.lastPriceVal * d.stockQty;
+				d.dateDiff = this.helper.daysBetweenDates(d.lastPriceDate, d.currPriceDate);
 			}
 		});
 		return stockQuoteData;
