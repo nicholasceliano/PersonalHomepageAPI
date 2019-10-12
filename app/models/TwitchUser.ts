@@ -1,4 +1,5 @@
 type TwitchUser = {
+	id: string;
 	name: string;
-	token: string;
+	profileImageUrl: string;
 };

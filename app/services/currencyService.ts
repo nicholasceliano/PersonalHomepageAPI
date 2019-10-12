@@ -24,9 +24,9 @@ export class CurrencyService {
 						lastPriceDate: dbr.lastPriceDate,
 						lastPriceVal: dbr.lastPriceVal,
 						lastStockVal: dbr.stockVal,
+						quoteExists: false,
 						stockName: dbr.stockName,
 						stockQty: dbr.stockQty,
-						quoteExists: false,
 					});
 				}
 
@@ -116,7 +116,7 @@ export class CurrencyService {
 					}
 
 					if (d.currPriceDate) d.dateDiff = this.helper.daysBetweenDates(d.lastPriceDate, d.currPriceDate);
-					
+
 					d.quoteExists = true;
 					break;
 				}

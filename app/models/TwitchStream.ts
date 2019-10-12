@@ -1,5 +1,5 @@
 type TwitchStream = {
-	channelDisplayName: string;
+	channelUserId: string;
 	channelLogo: string;
 	channelName: string;
 	channelStatus: string;

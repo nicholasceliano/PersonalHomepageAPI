@@ -14,13 +14,13 @@ router.use((req, res, next) => {
 });
 
 router.get('/followedStreams', (req, res) => {
-	new TwitchService(credentialsConfig.twitch).getFollowedStreams(res.locals.authResp)
+	new TwitchService(credentialsConfig.twitch, logger).getFollowedStreams(res.locals.authResp)
 		.then((apiResp) => res.apiResponse(apiResp))
 		.catch((apiErr) => res.apiError(apiErr));
 });
 
 router.get('/userInfo', (req, res) => {
-	new TwitchService(credentialsConfig.twitch).getUserInfo(res.locals.authResp)
+	new TwitchService(credentialsConfig.twitch, logger).getAuthUsersTwitchInfo(res.locals.authResp)
 		.then((apiResp) => res.apiResponse(apiResp))
 		.catch((apiErr) => res.apiError(apiErr));
 });

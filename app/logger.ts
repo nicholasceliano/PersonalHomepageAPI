@@ -18,6 +18,7 @@ loggers.add('logger', {
 	transports: [
 		// new (transports.Console)(),
 		new (transports.File)({ filename: path.join(global.appRoot, '..', webConfig().logLocation, 'error.log'), level: 'error' }),
+		new (transports.File)({ filename: path.join(global.appRoot, '..', webConfig().logLocation, 'warning.log'), level: 'warn' }),
 		new (transports.File)({ filename: path.join(global.appRoot, '..', webConfig().logLocation, 'info.log'), level: 'info' }),
 	],
 });
