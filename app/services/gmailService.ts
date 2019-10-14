@@ -24,7 +24,7 @@ export class GmailService {
 					if (res.data.id === emailId) {
 						resolve(res.data);
 					} else {
-						reject(errorConfig.backendError());
+						reject(errorConfig.backendError(res));
 					}
 				}
 			});

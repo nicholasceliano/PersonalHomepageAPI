@@ -1,6 +1,7 @@
-import { webConfig } from '../build/config';
+
 import path = require('path');
 import { format, loggers, transports } from 'winston';
+import { webConfig } from './config';
 const { combine, label, timestamp, printf  } = format;
 
 export {};

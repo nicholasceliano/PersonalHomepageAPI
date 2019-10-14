@@ -9,7 +9,13 @@
 		"testAPIs": "mocha 'app/test/routes/*.test.js'",
 		"tsc": "tsc",
 		"lint": "tslint 'app/**/*.ts' 'app/test/**/*.js'",
-		"build": "npm run lint app/**/*.ts & npm run tsc & npm tes & npm run testAPIs"
+		"build_w": "npm run lint app/**/*.ts && rd \/s \/q \"./build\" && npm run tsc && npm run copy_data_to_build_folder",
+		"build_w_prod": "npm run lint app/**/*.ts && rd \/s \/q \"./build\" && tsc --sourceMap false && npm run copy_data_to_build_folder",
+		"restart_server": "ssh pi@192.168.0.200 sudo pm2 restart PersonalHomepageAPI",
+		"copy_data_to_build_folder": "xcopy \/E \/I \".\/app\/data\" \".\/build\/data\"",
+		"clean_server_folders": "ssh pi@192.168.0.200 sudo rm -rf \/var\/www\/PersonalHomepageAPI; mkdir \/var\/www\/PersonalHomepageAPI",
+		"move_files_to_service": "scp -r .\/build pi@192.168.0.200:\/var\/www\/PersonalHomepageAPI && scp .\/package.json pi@192.168.0.200:\/var\/www\/PersonalHomepageAPI",
+		"deploy_w": "npm run build_w_prod && npm run clean_server_folders && npm run move_files_to_service && ssh pi@192.168.0.200 cd \/var\/www\/PersonalHomepageAPI\/build\/; npm install && npm run restart_server"
 	},
 	"author": "",
 	"license": "ISC",

@@ -1,7 +1,7 @@
 import express = require('express');
 import path = require('path');
-import { webConfig } from '../build/config';
 import { loggers } from 'winston';
+import { webConfig } from './config';
 
 global.appRoot = path.resolve(__dirname);
 require('./logger');

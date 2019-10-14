@@ -1,8 +1,7 @@
 import fs from 'fs';
 import { join } from 'path';
 import { HelperService } from './helperService';
-import { webConfig } from '../../build/config';
-import { errorConfig } from '../config';
+import { errorConfig, webConfig } from '../config';
 
 export class FilesService {
 
