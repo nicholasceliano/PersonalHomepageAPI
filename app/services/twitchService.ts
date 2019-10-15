@@ -36,7 +36,8 @@ export class TwitchService {
 
 					const getGameNames = this.getGamesByGameIds(authJSON, gameIds).then((games: TwitchGame[]) => {
 						streams.forEach((s) => {
-							s.game = games.filter((e) => e.id === s.game)[0].name;
+							const game = games.filter((e) => e.id === s.game)[0];
+							s.game = game ? game.name : '';
 						});
 					});
 
