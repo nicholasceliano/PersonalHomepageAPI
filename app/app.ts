@@ -18,6 +18,7 @@ app.use('/api/gmail', require('./routes/api/gmail'));
 app.use('/api/youtube', require('./routes/api/youtube'));
 app.use('/api/twitch', require('./routes/api/twitch'));
 app.use('/api/weather', require('./routes/api/weather'));
+app.use('/api/pi', require('./routes/api/pi'));
 app.use('/api/location', require('./routes/api/location'));
 app.use('/api/currency', require('./routes/api/currency'));
 app.use('/api/files', require('./routes/api/files'));
